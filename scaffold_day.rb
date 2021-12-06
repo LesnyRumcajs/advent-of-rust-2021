@@ -39,14 +39,4 @@ File.open("src/bin/day#{day_nr}.rs", 'w') do |f|
   HEREDOC
 end
 
-puts 'Adding entry in Cargo.toml...'
-File.open('Cargo.toml', 'a') do |f|
-  f << <<~HEREDOC
-
-    [[bin]]
-    name = "day#{day_nr}"
-    path = "src/bin/day#{day_nr}.rs"
-  HEREDOC
-end
-
 puts 'Done! Happy Advent!'
