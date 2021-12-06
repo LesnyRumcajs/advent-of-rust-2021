@@ -19,15 +19,13 @@ fn main() {
 }
 
 fn solve(fish: &[i32], days: i32) -> u64 {
-    let mut fish_groups = [0u64; 10];
+    let mut fish_groups = [0u64; 9];
     for fish in fish.iter() {
         fish_groups[*fish as usize] += 1;
     }
 
     for _day in 0..days {
         fish_groups[7] += fish_groups[0];
-        fish_groups[9] += fish_groups[0];
-        fish_groups[0] = 0;
         fish_groups.rotate_left(1);
     }
 
