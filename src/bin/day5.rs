@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 use std::io;
 use std::io::BufRead;
 use std::str::FromStr;
@@ -44,7 +44,7 @@ fn main() {
 }
 
 fn part1(lines: &[Line]) -> i32 {
-    let mut map: BTreeMap<(i32, i32), i32> = BTreeMap::new();
+    let mut map: HashMap<(i32, i32), i32> = HashMap::new();
     for line in lines {
         let min_x = line.0 .0.min(line.1 .0);
         let max_x = line.0 .0.max(line.1 .0);
@@ -64,7 +64,7 @@ fn part1(lines: &[Line]) -> i32 {
     map.values().filter(|&&val| val > 1).count() as i32
 }
 fn part2(lines: &[Line]) -> i32 {
-    let mut map: BTreeMap<(i32, i32), i32> = BTreeMap::new();
+    let mut map: HashMap<(i32, i32), i32> = HashMap::new();
     for line in lines {
         let min_x = line.0 .0.min(line.1 .0);
         let max_x = line.0 .0.max(line.1 .0);
