@@ -32,37 +32,41 @@ fn explore_twice(
     tunnels: &HashMap<String, Vec<String>>,
     path: Vec<String>,
     visited_twice: bool,
-) -> Vec<Vec<String>> {
-    let mut paths = Vec::new();
-
-    for next in tunnels.get(path.last().unwrap()).unwrap() {
-        let is_lowercase = next.chars().all(|ch| ch.is_lowercase());
-        if next == "end" {
-            paths.push(chain_vec(&path, next));
-        } else if !is_lowercase || !path.contains(next) || !visited_twice && next != "start" {
-            let visited_twice = visited_twice || is_lowercase && path.contains(next);
-            paths.extend(explore_twice(
-                tunnels,
-                chain_vec(&path, next),
-                visited_twice,
-            ));
-        }
-    }
-    paths
+) -> i32 {
+    tunnels
+        .get(path.last().unwrap())
+        .unwrap()
+        .iter()
+        .fold(0, |paths, next| {
+            let is_lowercase = next.chars().all(|ch| ch.is_lowercase());
+            paths
+                + if next == "end" {
+                    1
+                } else if !is_lowercase || !path.contains(next) || !visited_twice && next != "start"
+                {
+                    let visited_twice = visited_twice || is_lowercase && path.contains(next);
+                    explore_twice(tunnels, chain_vec(&path, next), visited_twice)
+                } else {
+                    0
+                }
+        })
 }
 
-fn explore(tunnels: &HashMap<String, Vec<String>>, path: Vec<String>) -> Vec<Vec<String>> {
-    let mut paths = Vec::new();
-
-    for next in tunnels.get(path.last().unwrap()).unwrap() {
-        if next == "end" {
-            paths.push(chain_vec(&path, next));
-        } else if !next.chars().any(|ch| ch.is_lowercase()) || !path.contains(next) {
-            paths.extend(explore(tunnels, chain_vec(&path, next)));
-        }
-    }
-
-    paths
+fn explore(tunnels: &HashMap<String, Vec<String>>, path: Vec<String>) -> i32 {
+    tunnels
+        .get(path.last().unwrap())
+        .unwrap()
+        .iter()
+        .fold(0, |paths, next| {
+            paths
+                + if next == "end" {
+                    1
+                } else if !next.chars().any(|ch| ch.is_lowercase()) || !path.contains(next) {
+                    explore(tunnels, chain_vec(&path, next))
+                } else {
+                    0
+                }
+        })
 }
 
 fn input_to_map(input: &[(String, String)]) -> HashMap<String, Vec<String>> {
@@ -81,14 +85,14 @@ fn input_to_map(input: &[(String, String)]) -> HashMap<String, Vec<String>> {
     tunnels
 }
 
-fn part1(input: &[(String, String)]) -> usize {
+fn part1(input: &[(String, String)]) -> i32 {
     let tunnels = input_to_map(input);
-    explore(&tunnels, vec!["start".to_owned()]).len()
+    explore(&tunnels, vec!["start".to_owned()])
 }
 
-fn part2(input: &[(String, String)]) -> usize {
+fn part2(input: &[(String, String)]) -> i32 {
     let tunnels = input_to_map(input);
-    explore_twice(&tunnels, vec!["start".to_owned()], false).len()
+    explore_twice(&tunnels, vec!["start".to_owned()], false)
 }
 
 #[cfg(test)]
