@@ -41,9 +41,11 @@ fn explore_twice(
             paths.push(chain_vec(&path, next));
         } else if !is_lowercase || !path.contains(next) || !visited_twice && next != "start" {
             let visited_twice = visited_twice || is_lowercase && path.contains(next);
-            for more_paths in explore_twice(tunnels, chain_vec(&path, next), visited_twice) {
-                paths.push(more_paths);
-            }
+            paths.extend(explore_twice(
+                tunnels,
+                chain_vec(&path, next),
+                visited_twice,
+            ));
         }
     }
     paths
@@ -56,9 +58,7 @@ fn explore(tunnels: &HashMap<String, Vec<String>>, path: Vec<String>) -> Vec<Vec
         if next == "end" {
             paths.push(chain_vec(&path, next));
         } else if !next.chars().any(|ch| ch.is_lowercase()) || !path.contains(next) {
-            for more_paths in explore(tunnels, chain_vec(&path, next)) {
-                paths.push(more_paths);
-            }
+            paths.extend(explore(tunnels, chain_vec(&path, next)));
         }
     }
 
