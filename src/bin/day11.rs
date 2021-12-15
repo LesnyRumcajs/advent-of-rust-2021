@@ -1,18 +1,10 @@
+use advent_of_rust_2021::input_read::read_to_2d_byte_array;
 use std::collections::HashSet;
 use std::convert::TryInto;
 use std::io;
-use std::io::BufRead;
-
-fn read_input<R: BufRead>(reader: R) -> Vec<Vec<u8>> {
-    reader
-        .lines()
-        .filter_map(Result::ok)
-        .map(|line| line.chars().map(|ch| ch as u8 - b'0').collect())
-        .collect()
-}
 
 fn main() {
-    let input = read_input(io::stdin().lock());
+    let input = read_to_2d_byte_array(io::stdin().lock());
     println!("Day 11, part 1: {}", part1(&input));
     println!("Day 11, part 2: {}", part2(&input));
 }
@@ -102,7 +94,8 @@ mod tests {
 
     #[test]
     fn test_solution() {
-        let input = read_input(BufReader::new(File::open("inputs/day11/input").unwrap()));
+        let input =
+            read_to_2d_byte_array(BufReader::new(File::open("inputs/day11/input").unwrap()));
         assert_eq!(part1(&input), 1637);
         assert_eq!(part2(&input), 242);
     }
