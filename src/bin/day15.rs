@@ -150,7 +150,7 @@ fn extend_input(input: &[Vec<u8>]) -> Vec<Vec<u8>> {
 
 fn part2(input: &[Vec<u8>]) -> usize {
     let extended_input = extend_input(input);
-    let graph = create_graph(&extend_input(input));
+    let graph = create_graph(&extended_input);
     shortest_path(
         &graph,
         0,
